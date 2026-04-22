@@ -14,21 +14,28 @@ This project sets up a complete monitoring stack using Docker.
 
 #### Grafana Dashboard (Node Exporter Full - ID: 1860)
 
-![Dashboard](screenshots/Screenshot%202026-04-21%20232325)
+![Dashboard](screenshots/grafana-dashboard.jpg)
 
 #### PromQL Query - CPU Usage
 
-![CPU Query](screenshots/Screenshot%202026-04-21%20231238)
+![CPU Query](screenshots/grafana-query.jpg)
 
 #### Alert Rule - High CPU Usage (>80%)
 
-![Alert Rule](screenshots/Screenshot%202026-04-21%20223401)
+![Alert Rule](screenshots/grafana-alert.jpg)
 
 ### How to Run
 
-```bash
 docker-compose up -d
 
+### Access Services
+
+| Service | URL | Credentials |
+|---------|-----|-------------|
+| Grafana | http://localhost:3000 | admin / admin |
+| Prometheus | http://localhost:9090 | - |
+
+### PromQL Queries Used
 
 # CPU Usage
 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
@@ -39,8 +46,8 @@ docker-compose up -d
 # Disk Usage
 (1 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100
 
+### Alert Rule
 
-
-
-
-
+- Name: High CPU Usage
+- Condition: CPU > 80% for 2 minutes
+- Severity: Warning
